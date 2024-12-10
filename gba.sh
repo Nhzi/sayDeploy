@@ -11,13 +11,13 @@ YELLOW='\033[1;33m'
 show() {
     case $2 in
         "error")
-            echo -e "${PINK}${BOLD}❌ $1${NORMAL}"
+            echo -e "${PINK}${BOLD}🗑️ $1${NORMAL}"
             ;;
         "progress")
-            echo -e "${PINK}${BOLD}⏳ $1${NORMAL}"
+            echo -e "${PINK}${BOLD}🤙 $1${NORMAL}"
             ;;
         *)
-            echo -e "${PINK}${BOLD}✅ $1${NORMAL}"
+            echo -e "${PINK}${BOLD}💰 $1${NORMAL}"
             ;;
     esac
 }
@@ -26,7 +26,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR" || exit
 
 install_dependencies() {
-    CONTRACT_NAME="ZunXBT"
+    CONTRACT_NAME="NAZ"
 
     if [ ! -d ".git" ]; then
         show "Initializing Git repository..." "progress"
@@ -53,8 +53,8 @@ input_required_details() {
     fi
 
     read -p "Enter your Private Key: " PRIVATE_KEY
-    read -p "Enter the token name (e.g., Clitoris): " TOKEN_NAME
-    read -p "Enter the token symbol (e.g., Naz): " TOKEN_SYMBOL
+    read -p "Enter the token name (e.g., Nhzi Token): " TOKEN_NAME
+    read -p "Enter the token symbol (e.g., NHZ): " TOKEN_SYMBOL
     read -p "Enter the network rpc url: " RPC_URL
 
     mkdir -p "$SCRIPT_DIR/token_deployment"
@@ -85,13 +85,13 @@ deploy_contract() {
 
     mkdir -p "$SCRIPT_DIR/src"
 
-    cat <<EOL > "$SCRIPT_DIR/src/ZunXBT.sol"
+    cat <<EOL > "$SCRIPT_DIR/src/naz.sol"
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract ZunXBT is ERC20 {
+contract NazXBT is ERC20 {
     constructor() ERC20("$TOKEN_NAME", "$TOKEN_SYMBOL") {
         _mint(msg.sender, 100000 * (10 ** decimals()));
     }
@@ -107,7 +107,7 @@ EOL
     fi
 
     show "Deploying ERC20 Token Contract $contract_number..." "progress"
-    DEPLOY_OUTPUT=$(forge create "$SCRIPT_DIR/src/ZunXBT.sol:ZunXBT" \
+    DEPLOY_OUTPUT=$(forge create "$SCRIPT_DIR/src/naz.sol:NHZI" \
         --rpc-url rpc_url \
         --private-key "$PRIVATE_KEY")
 
@@ -148,9 +148,9 @@ menu() {
     echo -e "${YELLOW}│              Script Menu Options                    │${NORMAL}"
     echo -e "${YELLOW}├─────────────────────────────────────────────────────┤${NORMAL}"
     echo -e "${YELLOW}│              1) Install dependencies                │${NORMAL}"
-    echo -e "${YELLOW}│              2) Input required details              │${NORMAL}"
+    echo -e "${YELLOW}│              2) Input em details                    │${NORMAL}"
     echo -e "${YELLOW}│              3) Deploy contract(s)                  │${NORMAL}"
-    echo -e "${YELLOW}│              4) Exit                                │${NORMAL}"
+    echo -e "${YELLOW}│              4) Leave                               │${NORMAL}"
     echo -e "${YELLOW}└─────────────────────────────────────────────────────┘${NORMAL}"
 
     read -p "Enter your choice: " CHOICE
